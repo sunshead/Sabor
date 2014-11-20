@@ -1,0 +1,57 @@
+{
+  "author": {
+    "name": "Robert Sköld",
+    "email": "robert@publicclass.se",
+    "url": "http://publicclass.se"
+  },
+  "name": "express-partials",
+  "description": "Express 3.x Layout & Partial support.",
+  "version": "0.3.0",
+  "repository": {
+    "url": "https://github.com/publicclass/express-partials"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "express": "3.0.0",
+    "methods": "*",
+    "mocha": "*",
+    "supertest": "0.4.0",
+    "ejs": "*",
+    "hamljs": "*",
+    "jade": "*",
+    "eco": "*",
+    "coffeecup": "*",
+    "consolidate": "*"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "gitHead": "7051681ec6135380260debf09b3e7a45ea5e35e6",
+  "bugs": {
+    "url": "https://github.com/publicclass/express-partials/issues"
+  },
+  "homepage": "https://github.com/publicclass/express-partials",
+  "_id": "express-partials@0.3.0",
+  "_shasum": "88b9c40164afd9a55278629b2948e6ace7bff45f",
+  "_from": "express-partials@*",
+  "_npmVersion": "1.4.14",
+  "_npmUser": {
+    "name": "slaskis",
+    "email": "robert@publicclass.se"
+  },
+  "maintainers": [
+    {
+      "name": "slaskis",
+      "email": "robert@publicclass.se"
+    }
+  ],
+  "dist": {
+    "shasum": "88b9c40164afd9a55278629b2948e6ace7bff45f",
+    "tarball": "http://registry.npmjs.org/express-partials/-/express-partials-0.3.0.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/express-partials/-/express-partials-0.3.0.tgz"
+}
