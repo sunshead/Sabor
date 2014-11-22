@@ -9,6 +9,9 @@
     "ejs": "*",
     "ejs-locals": "^1.0.2",
     "express": "3.18.3",
-    "express-partials":"*"
-  }
+    "express-partials":"*",
+    "connect-mongo": ">= 0.1.7",
+    "mongodb": ">= 0.9.9"
+  },
+  "main": "app.js"
 }
