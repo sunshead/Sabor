@@ -1,17 +1,16 @@
 {
-  "name": "application-name",
+  "name": "microblog",
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node app"
   },
   "dependencies": {
-    "ejs": "*",
-    "ejs-locals": "^1.0.2",
-    "express": "3.18.3",
-    "express-partials":"*",
-    "connect-mongo": ">= 0.1.7",
-    "mongodb": ">= 0.9.9"
-  },
-  "main": "app.js"
+    "express": "3.0.0beta7",
+    "jade": "*",
+	"ejs" : "*",
+	"connect-mongo" : "*",
+	"mongodb" : "*",
+	"express-partials" : "*"
+  }
 }
