@@ -6,7 +6,6 @@ var instance
 
 function db(callback) {
   if (instance == null) {
-    console.log(settings.connectionString)
     MongoClient.connect(settings.connectionString, function (err, db) {
       if (err) {
         throw new Error('Failed to connect to database: ' + err.errmsg)
