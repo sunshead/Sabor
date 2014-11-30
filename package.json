@@ -8,9 +8,9 @@
   "dependencies": {
     "express": "3.0.0beta7",
     "jade": "*",
-	"ejs" : "*",
-	"connect-mongo" : "*",
-	"mongodb" : "*",
-	"express-partials" : "*"
+    "ejs": "*",
+    "connect-mongo": "*",
+    "express-partials": "*",
+    "mongodb": "^1.4.22"
   }
 }

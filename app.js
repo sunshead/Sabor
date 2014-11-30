@@ -1,8 +1,3 @@
-
-/**
- * Module dependencies.
- */
-
 var express = require('express');
 var http = require('http');
 var routes = require('./routes');
@@ -20,39 +15,38 @@ var sessionStore = new MongoStore({
   console.log('connect mongodb success...');
 });
 
-
 var app = express();
 
 app.configure(function(){
-	app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 3000);
-	app.set('ip', process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
-	app.set('views', __dirname + '/views');
-	app.set('view engine', 'ejs');
+  app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 3000);
+  app.set('ip', process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'ejs');
 
-	app.use(partials());
-	app.use(flash());
+  app.use(partials());
+  app.use(flash());
 
-	app.use(express.favicon());
-	app.use(express.logger('dev'));
-	app.use(express.bodyParser());
-	app.use(express.methodOverride());
+  app.use(express.favicon());
+  app.use(express.logger('dev'));
+  app.use(express.bodyParser());
+  app.use(express.methodOverride());
 
-	app.use(express.cookieParser());
+  app.use(express.cookieParser());
 
-	app.use(express.session({
-		secret : settings.cookie_secret,
-		cookie : {
-			maxAge : 60000 * 20	//20 minutes
-		},
-		store : sessionStore
-	}));
+  app.use(express.session({
+    secret : settings.cookie_secret,
+    cookie : {
+      maxAge : 60000 * 20	//20 minutes
+    },
+    store : sessionStore
+  }));
 
-	app.use(app.router);
-	app.use(express.static(__dirname + '/public'));
+  app.use(app.router);
+  app.use(express.static(__dirname + '/public'));
 });
 
 app.configure('development', function(){
-	app.use(express.errorHandler());
+  app.use(express.errorHandler());
 });
 
 app.get('/', routes.index);
