@@ -5,12 +5,14 @@
   "scripts": {
     "start": "node app"
   },
+  "main": "app.js",
   "dependencies": {
-    "express": "3.0.0beta7",
-    "jade": "*",
-    "ejs": "*",
+    "connect-flash": "^0.1.1",
     "connect-mongo": "*",
+    "ejs": "*",
+    "express": "3.0.0beta7",
     "express-partials": "*",
+    "jade": "*",
     "mongodb": "^1.4.22"
   }
 }

@@ -21,7 +21,7 @@ Post.prototype.save = function save(callback) {
 
   mongodb(function(db) {
     db.collection('posts', function(err, collection) {
-      collection.ensureIndex('user');
+      //collection.ensureIndex('user');
 
       collection.insert(post, {safe: true}, function(err, post) {
 	callback(err, post);
@@ -34,7 +34,6 @@ Post.get = function get(username, callback) {
   mongodb(function (db) {
     db.collection('posts', function(err, collection) {
       //find documents whose user attribute is 'username', if null then match all
-      //查找user属性为username的文档，如果username为null则匹配全部
       var query = {};
       if (username) {
 	query.user = username;

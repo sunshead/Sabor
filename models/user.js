@@ -16,9 +16,6 @@ User.prototype.save = function save(callback) {
   mongodb(function (db) {
     // get users collection
     db.collection('users', function(err, collection) {
-      //add index to the name attribute
-      collection.ensureIndex('name', {unique: true});
-
       //save
       collection.insert(user, {safe: true}, function(err, user) {
 	callback(err, user);
