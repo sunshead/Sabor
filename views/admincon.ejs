@@ -1,0 +1,102 @@
+<%- include header %>
+
+<div class="container">
+<h1>Admin Account Management</h1>
+
+<table class="table table-striped table-bordered table-hover table-condensed">
+  <thead>
+    <tr>
+      <th style="width:10%">User</th>
+      <th style="width:5%">ID</th>
+      <th style="width:20%">Review</th>
+      <th style="width:30%">Reviews</th>
+      <th style="width:23%">Comment</th>
+      <th style="width:7%">Operation</th>
+    </tr>
+  </thead>
+  <tbody>
+       <% lists.forEach(function(list, index){ %>
+          <% if(list.comment.length>0){%>
+               <% list.comment.forEach(function(comment, index){ 
+                    if(list.hide){
+               %>
+                   <tr>
+                     <td><%= list.name %></td>
+                     <td><%= list._id %></td>
+                     <td><%= list.title %></td>
+                     <td><%= list.reviewText %></td>
+                     <td><%= comment.comment %></td>
+                     <td><span class="btn btn-danger">Shield</span><span class="btn disabled">Resume</span></td>
+                   </tr>
+                    <% }else{ %>
+                    <tr>
+                     <td><%= list.name %></td>
+                     <td><%= list._id %></td>
+                     <td><%= list.title %></td>
+                     <td><%= list.reviewText %></td>
+                     <td><%= comment.comment %></td>
+                     <td><span class="btn disabled">Shield</span><span class="btn btn-success">Resume</span></td>
+                   </tr>
+                    <% }%>
+               <% })%>
+          <% }else{
+               if(list.hide){
+          %>
+               <tr>
+                <td><%= list.name %></td>
+                <td><%= list._id %></td>
+                <td><%= list.title %></td>
+                <td><%= list.reviewText %></td>
+                <td uid="false">No comment</td>
+                <td><span class="btn btn-danger">Shield</span><span class="btn disabled">Resume</span></td>
+              </tr>
+          <% }else{%>
+               <tr class="warning">
+                <td><%= list.name %></td>
+                <td><%= list._id %></td>
+                <td><%= list.title %></td>
+                <td><%= list.reviewText %></td>
+                <td uid="false">No comment</td>
+                <td><span class="btn disabled">Shield</span><span class="btn btn-success">Resume</span></td>
+              </tr>
+          <% }%>
+          <% }%>
+    <% }) %>
+  </tbody>
+</table>
+
+<form action="/adminchange" method="post" style="display:none">
+    <input type="text" name="change">
+    <input type="text" name="id">
+    <input type="text" name="childId">
+    <input type="text" name="delAndRe">
+</form>
+
+<script>
+$(".btn-danger").on("click",function(e){
+     var change="close",
+          id=$(e.target).parent().parent().find("td:eq(1)").text(),
+          childId=$(e.target).parent().parent().find("td:eq(4)").attr("uid")!=="false"?
+                         $(e.target).parent().parent().find("td:eq(4)").text():null;
+     $("form input:eq(0)").val(change);
+     $("form input:eq(1)").val(id);
+     $("form input:eq(2)").val(childId);
+     $("form input:eq(3)").val("del");
+     $("form").submit();
+});
+
+$(".btn-success").on("click",function(e){
+     var change="close",
+          id=$(e.target).parent().parent().find("td:eq(1)").text(),
+          childId=$(e.target).parent().parent().find("td:eq(4)").attr("uid")!=="false"?
+                         $(e.target).parent().parent().find("td:eq(4)").text():null;
+     $("form input:eq(0)").val(change);
+     $("form input:eq(1)").val(id);
+     $("form input:eq(2)").val(childId);
+     $("form input:eq(3)").val("re");
+     $("form").submit();
+});
+</script>
+</div>
+
+<%- include footer %>

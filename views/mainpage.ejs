@@ -1,0 +1,71 @@
+<%- include header %>
+<div class="container">
+  <div class="row-fluid">
+    <div class="span7">
+      <ul class="thumbnails" id="element">
+        <% lists.forEach(function(list, index){ %>
+        <li>
+          <div class="span2">
+            <div class="row" style="margin-top:20px;">
+              <div class="span8 offset2">
+                <a href='<%= list.url %>'><img src="<%= list.imgUrl %>"></a>
+              </div>
+              <div class="span8 offset2">
+                <%= list.name %>
+              </div>
+            </div>
+          </div>
+          <div class="span9">
+            <h3><a href="/reviews/<%= list._id %>"><%= list.title %></a></h3>
+            <p><%= list.reviewText %></p>
+            <p><span>said at </span><span><%= list.time.minute %></span></p>
+          </div>
+        </li>
+        <% }) %>
+      </ul>
+<script type="text/template" id="tpl">
+    [% for(var i = 0; i < list.length; i++) { %]
+        [% var item = list[i] %]
+        <li>
+          <div class="span2">
+            <div class="row" style="margin-top:20px;">
+              <div class="span8 offset2">
+                <a href=[%=item.url%]><img src="[%=item.imgUrl%]"></a>
+              </div>
+              <div class="span8 offset2">
+                [%=item.name%]
+              </div>
+            </div>
+          </div>
+          <div class="span9">
+            <h3><a href="/reviews/[%= item._id %]">[%=item.title%]</a></h3>
+            <p>[%=item.reviewText%]</p>
+            <p><span>[%=item.time.minute%]</span><span>says</span></p>
+          </div>
+        </li>
+    [% } %]
+</script>
+      <button class="btn" id="getMore">Load more</button>
+    </div>
+  </div>
+</div>
+<script>
+var pageNum=1;
+$("#getMore").on("click",function(){
+  $.get("/getReview", { page: pageNum } ,function(info){
+    for(var i=0,l=info.length;i<l;i++){
+      info[i].url="/people/"+info[i].name;
+    }
+    pageNum++;
+    var element = $('#element'),
+        tpl = $('#tpl').html();
+    var render = _.template(tpl);
+    var data = {};
+    data.list=info;
+    var html = render(data);
+    // render elements
+    element.append(html);
+  });
+});
+</script>
+<%- include footer %>

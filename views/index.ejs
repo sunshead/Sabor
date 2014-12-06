@@ -1,14 +1,56 @@
-
-<% if (!user) { %>
-  <div class="hero-unit">
-    <h1>Welcome to Sabor</h1>
-    <p>Sabor is a gourmet microblog system built on Node.js</p>
-    <p>
-      <a class="btn btn-primary btn-large" href="/login">Log in</a>
-      <a class="btn btn-large" href="/reg">Sign up</a>
-    </p>
+<%- include header %>
+<div class="container">
+  <div class="row hero-unit">
+    <div class="span4">
+          <h1><%= title%></h1>
+          <p><%= name%></p>
+    </div>
+    <div class="span3 offset3">
+      <form id="login" action="/login" method="post">
+        <fieldset>
+          <div class="row-fluid">
+            <div class="span3">Login</div>
+            <div class="span5 offset4" id="changeReg" style="cursor:pointer">New to sabor?</div>
+          </div>
+          <input type="text" placeholder="username" name="name">
+          <input type="password" name="password" placeholder="password">
+          <button type="submit" class="btn">Login</button>
+             
+        </fieldset>
+      </form>
+      <form id="reg" action="/reg" method="post">
+        <fieldset>
+          <div class="row-fluid">
+            <div class="span3">Signup</div>
+            <div class="span5 offset4" id="changeLog" style="cursor:pointer">Old friend?</div>
+          </div>
+          <input type="text" placeholder="username" name="name">
+          <input type="password" name="password" placeholder="password">
+          <input type="password" name="repassword" placeholder="confirm password">
+          <% if (locals.error) { %>
+            <div><%= locals.error %> </div>
+          <% } %>
+          <% if(locals.success) {%>
+            <div><%= locals.success %> </div>
+          <% } %>
+          <button type="submit" class="btn">Signup</button>
+        </fieldset>
+      </form>
+    </div>
   </div>
-<% } else { %>
-   <%- partial('say') %> 
-<% } %>
-<%- partial('posts', {posts:posts}) %> 
+  <hr>
+  <footer>
+  </footer>
+</div>
+<script>
+$("#login").hide();
+$("#changeReg").on("click",function(){
+  $("#login").hide();
+  $("#reg").show();
+});
+$("#changeLog").on("click",function(){
+  $("#login").show();
+  $("#reg").hide();
+});
+</script>
+<%- include footer %>

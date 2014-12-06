@@ -1,0 +1,104 @@
+<%- include header %>
+<div class="container">
+  <div class="row-fluid">
+    <div class="span7">
+      <div class="row-fluid">
+        <h1 id="toName"><%= name%></h1>
+        <div class="span3">
+          <img src=<%= imgUrl%> style="width:127px;height:111px;">
+        </div>
+        <div class="span8" id="info">
+          <p>Address: <%= address%></p>
+          <p>Company: <%= company%></p>
+          <p>School: <%= school%></p>
+          <p>Self Intro: <%= info%></p>
+          <% if (user) { %>
+            <% if (user.name==name) { %>
+            <div id="edit"><span class="btn btn-info btn-lg">Edit</span></div>
+            <% }%>
+          <% }%>
+        </div>
+        <p class="btn disabled" id="offline">Offline</p>
+        <a class="btn btn-success" data-toggle="modal" id="talk" href="#talkBox" style="display:none">Chat</a>
+        <% if (user) { %>
+          <% if (user.name==name) { %>
+          <div class="span8" id="infoEdit" style="display:none;">
+            <form action="/people" method="post" enctype="multipart/form-data">
+                <input type="text" placeholder="where do you live?" name="address">
+                <input type="text" placeholder="who do you work for?" name="company">
+                <input type="text" placeholder="which school do you attend?" name="school">
+                <input type="text" placeholder="a brief self-introduction" name="info">
+                <br/>Edit Image<input type="file" name="thumbnail">
+                <button type="submit" class="btn">Submit</button>
+                <div id="noEdit">Cancel</div>
+            </form>
+          </div>
+          <% }%>
+        <% }%>
+      </div>
+      <br/>
+      <ul class="nav nav-tabs" id="myTab">
+        <li class="active"><a href="#home">Reviews</a></li>
+        <li><a href="#profile">Comments</a></li>
+        <li><a href="#messages">Heated discussion</a></li>
+      </ul>
+       
+      <div class="tab-content">
+        <div class="tab-pane active" id="home">
+          <ul class="thumbnails" id="element">
+            <% reviews.forEach(function(q, index){ %>
+            <li>
+              <h4><a href="/reviews/<%= q._id %>"><%= q.title %></a></h4>
+              <p><%= q.reviewText %></p>
+            </li>
+            <% })%>
+          </ul>
+        </div>
+        <div class="tab-pane" id="profile">Comments</div>
+        <div class="tab-pane" id="messages">Heated discussion</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+//navigation switch
+$('#myTab a:first').tab('show');
+$("#myTab").on("click",function(e){
+  if($(e.target).attr("href")==="#home"){
+    $("#myTab a:eq(0)").tab('show');
+  }else if($(e.target).attr("href")==="#profile"){
+    $("#myTab a:eq(1)").tab('show');
+  }else if($(e.target).attr("href")==="#messages"){
+    $("#myTab a:eq(2)").tab('show');
+  } 
+})
+//edit effects
+$("#edit").on("click",function(){
+  $("#info").hide();
+  $("#infoEdit").show();
+});
+$("#noEdit").on("click",function(){
+  $("#info").show();
+  $("#infoEdit").hide();
+});
+//get online prompt
+socket.on('online',function(data){
+  if(data.user=="<%= name%>"){
+    $("#talk").show();
+    $("#offline").hide();
+  }
+  if(data.users.indexOf("<%= name%>") != -1){
+    $("#talk").show();
+    $("#offline").hide();
+  }
+});
+//get offline prompt
+socket.on('offline',function(data){
+  if(data.user=="<%= name%>"){
+    $("#talk").hide();
+    $("#offline").show();
+  }
+});
+</script>
+<%- include footer %>

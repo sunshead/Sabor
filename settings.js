@@ -8,6 +8,6 @@ if (env.OPENSHIFT_APP_NAME) {
 }
 
 module.exports = {
-  cookie_secret : 'secret_meteoric',
+  cookie_secret : 'sabor',
   connectionString: connectionString
 }

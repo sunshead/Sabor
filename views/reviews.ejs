@@ -1,0 +1,25 @@
+<%- include header %>
+<div class="container">
+  <div class="row-fluid">
+    <div class="span7">
+      <div>
+        <h1><%= items.title %></h1>
+        <p><%= items.reviewText %></p>
+      </div>
+      <ul>
+        <% items.comment.forEach(function(q, index){ %>
+        <li>
+          <h4><%= q.user.name %></h4>
+          <p><%= q.comment %></p>
+        </li>
+        <% })%>
+      </ul>
+      <form action="comment" method="post">
+        <input name="reviewId" value="<%= id %>" style="display:none">
+        <textarea name="comment"></textarea>
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+  </div>
+</div>
+<%- include footer %>
