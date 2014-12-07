@@ -35,6 +35,7 @@ app.use(express.session({
   cookie: {maxAge: 1000 * 60 * 60 * 24 * 30},//30 days
   store: sessionStore
 }));
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(app.router);
 

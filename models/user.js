@@ -23,21 +23,15 @@ User.prototype.save=function(callback){
       info:"default",
       imgUrl:"./public/images/default_image.jpg"
   }; 
-  //open database
-  mongodb.open(function(err,db){ 
-    if(err){ 
-      return callback(err); 
-    } 
+
+    mongodb(function (db) {
     //link user collection in the database, if not find create a new one
     db.collection('user',function(err,collection){ 
-      //if connection failed, return an error and close database
       if(err){ 
-        mongodb.close(); 
         return callback(err); 
       } 
        //insert new document
       collection.insert(user,{safe: true},function(err,result){ 
-        mongodb.close(); 
         callback(err, user);
       }); 
     }); 
@@ -45,20 +39,14 @@ User.prototype.save=function(callback){
 }
 //get user info
 User.get = function(name, callback){ 
-  //open databse
-  mongodb.open(function(err, db){ 
-    if(err){ 
-      return callback(err); 
-    } 
+  mongodb(function (db) {
     //get user collection
     db.collection('user', function(err, collection){ 
       if(err){ 
-        mongodb.close(); 
         return callback(err); 
       } 
       //get document whose 'user' value equals user
       collection.findOne({name: name},function(err, doc){ 
-        mongodb.close(); 
         //success
         if(doc){ 
           var user = new User(doc); 
@@ -74,10 +62,7 @@ User.get = function(name, callback){
 };
 
 User.review = function(review, callback){
-  mongodb.open(function(err,db){ 
-    if(err){ 
-      return callback(err); 
-    } 
+  mongodb(function (db) { 
     var date = new Date(); //add time attribute to reviews
     var time = { 
       date: date, 
@@ -93,7 +78,6 @@ User.review = function(review, callback){
     //save into the 'reviews' collection
     db.collection('reviews',function(err,collection){ 
       if(err){ 
-        mongodb.close(); 
         return callback(err); 
       } 
       //add id to each review
@@ -111,7 +95,6 @@ User.review = function(review, callback){
         //define review id
         review._id=ids;
         collection.insert(review,{safe: true},function(err,result){ 
-          mongodb.close(); 
           //success
           callback(err, review); 
         }); 
@@ -121,14 +104,10 @@ User.review = function(review, callback){
 }; 
 
 User.getReview=function(callback){ 
-  mongodb.open(function(err, db){ 
-    if(err){ 
-      return callback(err); 
-    } 
+  mongodb(function (db) {
     //get 'reviews' collection
     db.collection('reviews', function(err, collection){ 
-      if(err){ 
-        mongodb.close(); 
+      if(err){
         return callback(err); 
       } 
       //find document whose 'user' value equals user
@@ -143,13 +122,11 @@ User.getReview=function(callback){
                 items[open].imgUrl=doc.imgUrl;
                 open++;
                 if(open==l){
-                  mongodb.close();
                   return callback(items);
                 }
               });
             }
           }else{
-            mongodb.close();
             return callback(items);
           } 
         }); 
@@ -161,13 +138,9 @@ User.getReview=function(callback){
 User.getReviewPage=function(page,callback){
   
   var num=page*5;
-  mongodb.open(function(err, db){
-    if(err){
-      return callback(err);
-    }
+  mongodb(function (db) {
     db.collection('reviews', function(err, collection){ 
       if(err){ 
-        mongodb.close(); 
         return callback(err); 
       } 
       //find document whose 'user' value equals user
@@ -181,7 +154,6 @@ User.getReviewPage=function(page,callback){
               items[open].imgUrl=doc.imgUrl; 
               open++; 
               if(open==l){ 
-                mongodb.close(); 
                 return callback(items); 
               } 
             }); 
@@ -194,18 +166,13 @@ User.getReviewPage=function(page,callback){
 
 User.findReview=function(id,callback){
 
-  mongodb.open(function(err, db){
-    if(err){
-      return callback(err);
-    }
+  mongodb(function (db) {
     db.collection('reviews', function(err, collection){
       if(err){
-        mongodb.close();
         return callback(err);
       }
       collection.find({_id:Number(id)}).toArray(function(err,items){
         if(err) throw err;
-        mongodb.close();
         return callback(err,items);
       });
     });
@@ -214,18 +181,13 @@ User.findReview=function(id,callback){
 
 User.comment=function(reviewId,comment,callback){
 
-  mongodb.open(function(err, db){
-    if(err){
-      return callback(err);
-    }
+  mongodb(function (db) {
     db.collection('reviews', function(err, collection){
       if(err){
-        mongodb.close();
         return callback(err);
       }
       collection.update({_id:Number(reviewId)},{$push:{comment:comment}},function(err,items){
         if(err) throw err;
-        mongodb.close();
         return callback(items);
       });
     });
@@ -233,19 +195,14 @@ User.comment=function(reviewId,comment,callback){
 };
 User.getReviewUser=function(user,callback){ 
 
-  mongodb.open(function(err, db){ 
-    if(err){ 
-      return callback(err); 
-    } 
+  mongodb(function (db) {
     db.collection('reviews', function(err, collection){ 
       if(err){ 
-        mongodb.close(); 
         return callback(err); 
       } 
 
       collection.find({name:user}).sort({time:-1}).toArray(function(err,items){ 
         if(err) throw err; 
-        mongodb.close(); 
         return callback(items); 
       }); 
     }); 
@@ -260,13 +217,9 @@ User.prototype.updataEdit=function(callback){
       info:this.info,
       imgUrl:this.imgUrl
   };
-  mongodb.open(function(err,db){
-    if(err){
-      return callback(err);
-    }
+  mongodb(function (db) {
     db.collection('user',function(err,collection){
       if(err){
-        mongodb.close();
         return callback(err);
       }
       var upUser={};
@@ -287,7 +240,6 @@ User.prototype.updataEdit=function(callback){
         upUser.imgUrl=user.imgUrl;
       }
       collection.update({'name':user.name},{$set:upUser},function(err,result){
-        mongodb.close();
         callback(err, user);
       });
     });
@@ -296,21 +248,16 @@ User.prototype.updataEdit=function(callback){
 
 User.superAdmin=function(name,psd,callback){
 
-  mongodb.open(function(err, db){
-    if(err){
-      return callback(err);
-    }
+  mongodb(function (db) {
     //get 'user' collection
     db.collection('user', function(err, collection){
       if(err){
-        mongodb.close();
         return callback(err);
       }
       //check if is super admin
       if(name=="admin"){
         collection.find({ name : 'admin' }).toArray(function(err,items){
           if(err) throw err;
-          mongodb.close();
           if(psd==items[0].password){
             return callback({admin:1});
           }else{
@@ -320,7 +267,6 @@ User.superAdmin=function(name,psd,callback){
       }else{
         collection.find({ name : name }).toArray(function(err,items){
           if(err) throw err;
-          mongodb.close();
           if(psd==items[0].password){
             if(items.admin&&items.admin==2){
               return callback({admin:2});
@@ -335,20 +281,15 @@ User.superAdmin=function(name,psd,callback){
 };
 
 User.superAdmin=function(name,psd,callback){
-  mongodb.open(function(err, db){
-    if(err){
-      return callback(err);
-    }
+  mongodb(function (db) {
     db.collection('user', function(err, collection){
       if(err){
-        mongodb.close();
         return callback(err);
       }
       //check if is super admin
       if(name=="admin"){
         collection.find({ name : 'admin' }).toArray(function(err,items){
           if(err) throw err;
-          mongodb.close();
           if(psd==items[0].password){
             return callback({admin:"1"});
           }else{
@@ -356,7 +297,6 @@ User.superAdmin=function(name,psd,callback){
           }
         });
       }else{
-        mongodb.close();
         return callback({admin:"3"});
       }
     });
@@ -364,19 +304,14 @@ User.superAdmin=function(name,psd,callback){
 };
 
 User.getReviewAdmin=function(callback){
-  mongodb.open(function(err, db){
-    if(err){
-      return callback(err);
-    }
+  mongodb(function (db) {
     db.collection('reviews', function(err, collection){
       if(err){
-        mongodb.close();
         return callback(err);
       }
       //return 10 entries
       collection.find().limit(10).sort({time:-1}).toArray(function(err,items){
         if(err) throw err;
-        mongodb.close();
         return callback(items);
       });
     });
@@ -384,13 +319,9 @@ User.getReviewAdmin=function(callback){
 };
 
 User.adminChange=function(change,id,childId,delAndRe,callback){
-  mongodb.open(function(err, db){
-    if(err){
-      return callback(err);
-    }
+  mongodb(function (db) {
     db.collection('reviews', function(err, collection){
       if(err){
-        mongodb.close();
         return callback(err);
       }
       //if user is shielded
@@ -399,14 +330,12 @@ User.adminChange=function(change,id,childId,delAndRe,callback){
         if(childId==""){
           collection.update({'_id':Number(id)},{$set:{hide:false}},function(err,info){
             if(err) throw err;
-            mongodb.close();
             callback(info);
           });
         }else{
         //if the review has been commented
           collection.update({"comment.comment":childId},{$set:{hide:false}},function(err,info){
             if(err) throw err;
-            mongodb.close();
             callback(info);
           });
         }
@@ -414,13 +343,11 @@ User.adminChange=function(change,id,childId,delAndRe,callback){
         if(childId==""){
           collection.update({'_id':Number(id)},{$set:{hide:true}},function(err,info){
             if(err) throw err;
-            mongodb.close();
             callback(info);
           });
         }else{
           collection.update({"comment.comment":childId},{$set:{hide:true}},function(err,info){
             if(err) throw err;
-            mongodb.close();
             callback(info);
           });
         }
