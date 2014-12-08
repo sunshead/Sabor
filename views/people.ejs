@@ -42,7 +42,7 @@
         <li><a href="#profile">Comments</a></li>
         <li><a href="#messages">Heated discussion</a></li>
       </ul>
-       
+
       <div class="tab-content">
         <div class="tab-pane active" id="home">
           <ul class="thumbnails" id="element">
@@ -71,7 +71,7 @@ $("#myTab").on("click",function(e){
     $("#myTab a:eq(1)").tab('show');
   }else if($(e.target).attr("href")==="#messages"){
     $("#myTab a:eq(2)").tab('show');
-  } 
+  }
 })
 //edit effects
 $("#edit").on("click",function(){
@@ -84,6 +84,7 @@ $("#noEdit").on("click",function(){
 });
 //get online prompt
 socket.on('online',function(data){
+  console.log('online');
   if(data.user=="<%= name%>"){
     $("#talk").show();
     $("#offline").hide();
@@ -95,6 +96,7 @@ socket.on('online',function(data){
 });
 //get offline prompt
 socket.on('offline',function(data){
+  console.log('offline');
   if(data.user=="<%= name%>"){
     $("#talk").hide();
     $("#offline").show();

@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <title>Sabor</title>
-<base href="http://sabor-sunshead.rhcloud.com/" />
-<link rel="stylesheet" href="stylesheets/style.css">
-<link rel="stylesheet" href="stylesheets/bootstrap.min.css">
-<script type="text/javascript" src="javascripts/jquery-1.8.0.min.js"></script>
-<script type="text/javascript" src="javascripts/bootstrap.min.js"></script>
-<script type="text/javascript" src="javascripts/underscore.js"></script>
+<link rel="stylesheet" href="/stylesheets/style.css">
+<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+<script type="text/javascript" src="/javascripts/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
+<script type="text/javascript" src="/javascripts/underscore.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
@@ -23,8 +22,8 @@
       <a class="brand" href="#">Sabor</a>
       <div class="nav-collapse collapse">
         <ul class="nav">
-          <li><a href="/people">Homepage</a></li> 
-          <li><a href="/mainpage">Info Channel</a></li>  
+          <li><a href="/">Homepage</a></li>
+          <li><a href="/mainpage">Info Channel</a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Blogrolls<b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -86,7 +85,15 @@ $("#reviewPost").on("click",function(){
   });
 });
 
-var socket = io.connect();
+var socket;
+
+if ((location.host.indexOf("localhost") == -1) &&
+    (location.host.indexOf("127.0.0.1") == -1)) {
+  socket = io.connect("ws://sabor-sunshead.rhcloud.com:8000");
+} else {
+  socket = io.connect();
+}
+
 var talkNews={};
 //receive chat messages
 socket.on('selfTalk',function(data){
@@ -98,18 +105,19 @@ socket.on('selfTalk',function(data){
 $("#talkPost").on("click",function(){
   if($("#toName").length>0){
     talkNews.from=$("#toName").text();
+    socket.emit('selfTalk', {
+      from:$("#myName").text(),
+      to:talkNews.from,
+      talk:$("#selfTalk").val()
+    });
+
+    socket.on('selfTalkSuccess', function () {
+      $("#talkCom").append("<p style='color:pink;'>You sent a message to "+$("#toName").text()+": "+$("#selfTalk").val()+"</p>");
+      $("#selfTalk").val("");
+    });
   }
-  socket.emit('selfTalk',
-    {from:$("#myName").text(),
-    to:talkNews.from,
-    talk:$("#selfTalk").val()},
-    function(info){
-      if(info=="ok"){
-        $("#talkCom").append("<p style='color:pink;'>You sent a message to "+$("#toName").text()+": "+$("#selfTalk").val()+"</p>");
-        $("#selfTalk").val("");
-      }
-  });
 });
+
 //display message on click
 $("#news").on("click",function(){
   $("#news").hide();

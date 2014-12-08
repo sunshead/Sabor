@@ -1,12 +1,18 @@
-
 var express = require('express');
 var routes = require('./routes');
 var http = require('http');
-var path = require('path')
-		, MongoStore = require('connect-mongo')(express)
-		, settings = require('./settings')
-		, flash = require('connect-flash')
-    , sock= require('./models/socket');
+var path = require('path');
+var MongoStore = require('connect-mongo')(express);
+var settings = require('./settings');
+var flash = require('connect-flash');
+var sock= require('./models/socket');
+var fs = require('fs');
+
+// ensure uploads directory is created
+
+if (!fs.existsSync('./uploads')) {
+  fs.mkdir('./uploads');
+}
 
 var sessionStore = new MongoStore({
   url: settings.connectionString
@@ -26,7 +32,7 @@ app.use(flash());
 
 app.use(express.favicon());
 app.use(express.logger('dev'));
-app.use(express.bodyParser({uploadDir:'./uploads'})); 
+app.use(express.bodyParser({uploadDir:'./uploads'}));
 app.use(express.methodOverride());
 app.use(express.cookieParser());
 app.use(express.session({

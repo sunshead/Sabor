@@ -23,16 +23,17 @@ module.exports = function(io){
 	 }
 	});
 
-	//private messages
-	socket.on('selfTalk',function(data,fn){
-		fn("ok");
-		var clients = io.sockets.clients();
-		clients.forEach(function(client){
-		     if(client.name == data.to){
-		       //trigger this user's client's talk event
-		       client.emit('selfTalk',data);
-		     }
-		   });
-		});
+	// private messages
+	  socket.on('selfTalk',function (data) {
+	    var sockets = io.sockets.sockets;
+	    sockets.forEach(function (s) {
+	      if (s.name === data.to) {
+		// trigger this user's client's talk event
+		s.emit('selfTalk', data);
+	      }
+	    });
+
+            socket.emit('selfTalkSuccess');
+	  });
 	});
 };
