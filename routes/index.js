@@ -222,7 +222,7 @@ module.exports = function(app){
 		          req.flash('error',err);
 		         return res.redirect('/');
 		     }
-		     //if save success, return the status of 1
+		     //if svae success, return the status of 1
 		     res.send({"status": 1});
 		})
 	 });

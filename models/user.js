@@ -21,7 +21,7 @@ User.prototype.save=function(callback){
       company:"default",
       school:"default",
       info:"default",
-      imgUrl:"./public/images/default_image.jpg"
+      imgUrl:"https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSHxz9gaElONul0mzK8r5TbJ-wXPy6z-OFwlbvuTqqQJryOlk-8"
   }; 
 
     mongodb(function (db) {
